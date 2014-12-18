@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BB459226-5C4E-4BD0-9545-28D1E002A4CD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yaife</RootNamespace>
+    <AssemblyName>Yaife</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Yaife.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Editors\ByteArrayConverter.cs" />
+    <Compile Include="Editors\JsonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors\JsonForm.Designer.cs">
+      <DependentUpon>JsonForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors\SubtitleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors\SubtitleForm.Designer.cs">
+      <DependentUpon>SubtitleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors\Subtitle.cs" />
+    <Compile Include="Editors\PositionedSubtitleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors\PositionedSubtitleForm.Designer.cs">
+      <DependentUpon>PositionedSubtitleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors\CommentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editors\CommentForm.Designer.cs">
+      <DependentUpon>CommentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editors\PropertyJObject.cs" />
+    <Compile Include="FormatInterfaces\IFrameCount.cs" />
+    <Compile Include="FormatInterfaces\ISubtitled.cs" />
+    <Compile Include="Formats\BizHawkBK2\Comments.cs" />
+    <Compile Include="Formats\BizHawkBK2\Frame.cs" />
+    <Compile Include="Formats\BizHawkBK2\Header.cs" />
+    <Compile Include="Formats\BizHawkBK2\InputLogIO.cs" />
+    <Compile Include="Formats\BizHawkBK2\Movie.cs" />
+    <Compile Include="Editors\PositionedSubtitle.cs" />
+    <Compile Include="Formats\BizHawkBK2\Subtitles.cs" />
+    <Compile Include="Formats\BizHawkBK2\SyncSettings.cs" />
+    <Compile Include="Formats\Dolphin\WiiMoteFrame.cs" />
+    <Compile Include="Formats\Dolphin\GameCubeFrame.cs" />
+    <Compile Include="Formats\Dolphin\Header.cs" />
+    <Compile Include="Formats\Dolphin\InputLogIO.cs" />
+    <Compile Include="Formats\Dolphin\Movie.cs" />
+    <Compile Include="Formats\FormatSelector.cs" />
+    <Compile Include="Formats\Hourglass\Frame.cs" />
+    <Compile Include="Formats\Hourglass\Header.cs" />
+    <Compile Include="Formats\Hourglass\InputLogIO.cs" />
+    <Compile Include="Formats\Hourglass\Menu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Formats\Hourglass\Movie.cs" />
+    <Compile Include="Formats\PSXjin\Frame.cs" />
+    <Compile Include="Formats\PSXjin\Header.cs" />
+    <Compile Include="Formats\PSXjin\InputLogIO.cs" />
+    <Compile Include="Formats\PSXjin\Movie.cs" />
+    <Compile Include="Formats\PSXjin\PSXController.cs" />
+    <Compile Include="Formats\PCSX\Frame.cs" />
+    <Compile Include="Formats\PCSX\Header.cs" />
+    <Compile Include="Formats\PCSX\InputLogIO.cs" />
+    <Compile Include="Formats\PCSX\Movie.cs" />
+    <Compile Include="Formats\PCSX\PSXController.cs" />
+    <Compile Include="Formats\VisualBoyAdvance\Frame.cs" />
+    <Compile Include="Formats\VisualBoyAdvance\Header.cs" />
+    <Compile Include="Formats\VisualBoyAdvance\InputLogIO.cs" />
+    <Compile Include="Formats\VisualBoyAdvance\Movie.cs" />
+    <Compile Include="IFrame.cs" />
+    <Compile Include="IMovie.cs" />
+    <Compile Include="InputLog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MovieTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\BinaryExtensions.cs" />
+    <Compile Include="Utilities\CopyMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\CopyMessageBox.Designer.cs">
+      <DependentUpon>CopyMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\CRC32.cs" />
+    <Compile Include="Utilities\ValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\ValueDialog.Designer.cs">
+      <DependentUpon>ValueDialog.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Editors\SubtitleForm.resx">
+      <DependentUpon>SubtitleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputLog.resx">
+      <DependentUpon>InputLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors\JsonForm.resx">
+      <DependentUpon>JsonForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors\PositionedSubtitleForm.resx">
+      <DependentUpon>PositionedSubtitleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editors\CommentForm.resx">
+      <DependentUpon>CommentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MovieTab.resx">
+      <DependentUpon>MovieTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Utilities\CopyMessageBox.resx">
+      <DependentUpon>CopyMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\ValueDialog.resx">
+      <DependentUpon>ValueDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

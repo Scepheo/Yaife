@@ -1,0 +1,39 @@
+#summary Version History
+
+== Yaife Version History ==
+Downloads and details of each version of Yaife.
+
+=== Yaife 0.0.4 ===
+
+General
+  * Improvement to file loading speed.
+  * Fixed bug when overwriting existing files.
+
+Dolphin
+  * Fixed triggers not being written correctly.
+
+PCSX-rr
+  * Is now supported.
+
+=== Yaife 0.0.3 ===
+[https://drive.google.com/open?id=0B6yGoxGexS6BTzV2eHJYUklHSG8&authuser=0 download]
+
+General usability improvements, slight fixes and inclusion of Json.NET dll in distribution.
+
+
+=== Yaife 0.0.2 ===
+[https://drive.google.com/open?id=0B6yGoxGexS6BYWVaNFZidmJtbFk&authuser=0 download]
+
+Usability
+  * Header property names
+
+Dolphin
+  * Add header & GC controllers for Dolphin. Does NOT work with Wii movies.
+
+
+=== Yaife 0.0.1 ===
+[https://drive.google.com/file/d/0B6yGoxGexS6BTEQxc19TQjIySmM download]
+
+Initial release
+  * Basic Hourglass support
+  * Basic BK2 support
