@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yaife.Utilities;
 
 namespace Yaife.Formats.Dolphin
 {
@@ -42,37 +43,10 @@ namespace Yaife.Formats.Dolphin
 				result[1] = "";
 			else
 				result[1] = Buttons.ToString();
-						
-			result[2] = "";
-			foreach (var b in Data)
-				result[2] += b.ToString("X2") + " ";
+
+			result[2] = Data.ToHexString();
 
 			return result;
-		}
-
-		private string hexString(byte[] data, int offset = 0)
-		{
-			return hexString(data, offset, data.Length - offset);
-		}
-
-		private string hexString(byte[] data, int offset, int length)
-		{
-			var sb = new StringBuilder(2 * length);
-
-			for (int i = 0; i < length; i++)
-				sb.Append(data[offset + i].ToString("X2"));
-
-			return sb.ToString();
-		}
-
-		private string onOff(bool value)
-		{
-			return value ? "on" : "off";
-		}
-
-		private string trueFalse(bool value)
-		{
-			return value ? "true" : "false";
 		}
 
 		public void Parse(string[] str)
@@ -87,12 +61,7 @@ namespace Yaife.Formats.Dolphin
 				Buttons = (WiiMoteButtons)Enum.Parse(typeof(WiiMoteButtons), str[1]);
 
 			// Parse rest of data
-			var split = str[2].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-			Data = new byte[split.Length];
-
-			for (int i = 0; i < Data.Length; i++)
-				Data[i] = byte.Parse(split[i], NumberStyles.HexNumber);
+			Data = HexString.Parse(str[2]);
 		}
 
 		public byte[] GetBytes()
