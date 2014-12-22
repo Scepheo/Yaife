@@ -38,47 +38,14 @@ namespace Yaife.Formats.Dolphin
 
 			result[0] = PacketType.ToString();
 
-			if (PacketType == PacketType.Extension_21)
+			if (PacketType == PacketType.Extension_21 || Buttons == WiiMoteButtons.None)
 				result[1] = "";
 			else
 				result[1] = Buttons.ToString();
-
-			// TODO: Make this prettier
-			switch (PacketType)
-			{
-				default:
-					result[2] = "";
-					foreach (var b in Data)
-						result[2] += b.ToString("X2") + " ";
-					break;
-				case PacketType.StatusInformation:
-					result[2] = String.Join(" ",
-						"batteryEmpty:" + trueFalse((Data[0] & 0x01) > 0),
-						"extension:"    + onOff((Data[0] & 0x02) > 0),
-						"speaker:"      + onOff((Data[0] & 0x04) > 0),
-						"irCamera:"     + onOff((Data[0] & 0x08) > 0),
-						"led1"          + onOff((Data[0] & 0x10) > 0),
-						"led2"          + onOff((Data[0] & 0x20) > 0),
-						"led3"          + onOff((Data[0] & 0x40) > 0),
-						"led4"          + onOff((Data[0] & 0x80) > 0),
-						"batteryLevel:" + Data[3]);
-					break;
-				case PacketType.ReadMemory:
-					result[2] = String.Join(" ",
-						"error:" + ((WiiMoteReadError)(Data[0] >> 4)).ToString(),
-						"size:" + (Data[0] & 0x0F).ToString(),
-						"address:" + ((Data[1] << 8) | Data[2]).ToString("X4"),
-						"data:" + hexString(Data, 3));
-					break;
-				case PacketType.Acknowledge:
-					result[2] = String.Join(" ",
-						"report:" + Data[0].ToString(),
-						"error:" + ((WiiMoteError)Data[1]).ToString());
-					break;
-				case PacketType.Buttons:
-					result[2] = "";
-					break;
-			}
+						
+			result[2] = "";
+			foreach (var b in Data)
+				result[2] += b.ToString("X2") + " ";
 
 			return result;
 		}
