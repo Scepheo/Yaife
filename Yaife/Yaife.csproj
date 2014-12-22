@@ -162,6 +162,7 @@
       <DependentUpon>CopyMessageBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\CRC32.cs" />
+    <Compile Include="Utilities\HexString.cs" />
     <Compile Include="Utilities\ValueDialog.cs">
       <SubType>Form</SubType>
     </Compile>
