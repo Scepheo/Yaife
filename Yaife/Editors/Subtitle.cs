@@ -42,14 +42,14 @@ namespace Yaife
 
 		public string ToSubStationAlpha(float fps)
 		{
-			//Format: Layer, Name, Start, End, Style, MarginL, MarginR, MarginV, Effect, Text
-			return "Dialoque: "
+			//Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+			return "Dialogue: "
 				+ String.Join(",",
 					0,
-					"NPT",
 					subStationAlphaTime(Frame / fps),
 					subStationAlphaTime((Frame + Length) / fps),
-					"DefaultVCD",
+					"default",
+					"",
 					"0000",
 					"0000",
 					"0000",
@@ -65,30 +65,29 @@ namespace Yaife
 			var seconds = (int)(Math.Floor(timeInSeconds) % 60);
 			var centiSeconds = (int)(Math.Floor(timeInSeconds * 100) % 100);
 
-			return String.Format("{0:D1}:{1:D2}:{2:D2}:{3:D2}", hours, minutes, seconds, centiSeconds);
+			return String.Format("{0:D1}:{1:D2}:{2:D2}.{3:D2}", hours, minutes, seconds, centiSeconds);
 		}
 
 		public static string ToSubStationAlpha(Subtitle[] subs, float fps)
 		{
 			var str = "";
 
+			// TODO: It'd probably be best to ask the user for dimensions,
+			// especially when using positioned subtitles.
 			str += "[Script Info]\n";
 			str += "Title: Yaife Exported Subtitles\n";
-			str += "Original Script: Yaife\n";
-			str += "Script Type: V4.00\n";
-			str += "Collisions: Normal\n";
-			str += "PlayResY: 200\n";
-			str += "PlayDepth: 0\n";
-			str += "Timer: 100,0000\n";
+			str += "Script Type: v4.00+\n";
+			str += "PlayResY: 640\n";
+			str += "PlayResX: 480\n";
 			str += "\n";
 
-			str += "[v4 Styles]\n";
-			str += "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\n";
-			str += "Style: DefaultVCD, Arial,28,11861244,11861244,11861244,-2147483640,-1,0,1,1,2,2,30,30,30,0,0\n";
+			str += "[V4+ Styles]\n";
+			str += "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\n";
+			str += "Style: default,Arial,28,11861244,11861244,-2147483640,-1,0,1,1,2,2,30,30,30,0,0\n";
 			str += "\n";
 
 			str += "[Events]\n";
-			str += "Format: Layer, Name, Start, End, Style, MarginL, MarginR, MarginV, Effect, Text\n";
+			str += "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n";
 
 			for (int i = 0; i < subs.Length; i++)
 				str += subs[i].ToSubStationAlpha(fps);
