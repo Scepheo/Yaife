@@ -216,12 +216,8 @@ namespace Yaife
 				var hasFrameCount = typeof(IFrameCount).IsAssignableFrom(type);
 				adjustFrameCountToolStripMenuItem.Enabled = hasFrameCount;
 
-#if DEBUG
 				var hasSubtitles = typeof(ISubtitled).IsAssignableFrom(type);
 				subtitlesToolStripMenuItem.Enabled = hasSubtitles;
-#else
-				subtitlesToolStripMenuItem.Visible = false;
-#endif
 			}
 		}
 
@@ -313,7 +309,7 @@ namespace Yaife
 
 			// Get the file name for the subtitles
 			var fileDialog = new SaveFileDialog();
-			fileDialog.Filter = "Sub Station Alpha|*.ssa|All Files|*.*";
+			fileDialog.Filter = "Sub Station Alpha|*.ass|All Files|*.*";
 
 			var result = fileDialog.ShowDialog();
 
