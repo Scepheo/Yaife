@@ -54,8 +54,10 @@ namespace Yaife
 		{
 			var tempFile = Path.GetTempFileName();
 
+#if !DEBUG
 			try
 			{
+#endif
 				// Attempt to save to temporary file
 				Movie.WriteFile(tempFile);
 
@@ -68,7 +70,7 @@ namespace Yaife
 
 				// Set status text
 				MainForm.ProgressLabel.Text = "Saved file";
-
+#if !DEBUG
 			}
 			catch (Exception e)
 			{
@@ -82,10 +84,13 @@ namespace Yaife
 			}
 			finally
 			{
+#endif
 				// Clean up temporary file
 				if (File.Exists(tempFile))
 					File.Delete(tempFile);
+#if !DEBUG
 			}
+#endif
 		}
 
 		public void SaveAs(string path)
