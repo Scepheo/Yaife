@@ -49,8 +49,10 @@ namespace Yaife
 
 			if (dialog.ShowDialog() == DialogResult.OK)
 			{
+#if !DEBUG
 				try
 				{
+#endif
 					var movie = FormatSelector.Open(dialog.FileName);
 					var tab = new MovieTab(movie);
 					MainTabControl.TabPages.Add(tab);
@@ -58,6 +60,7 @@ namespace Yaife
 
 					if (MainTabControl.TabCount == 1)
 						openMovieMenu();
+#if !DEBUG
 				}
 				catch (Exception err)
 				{
@@ -68,6 +71,7 @@ namespace Yaife
 						MessageBoxIcon.Error
 						);
 				}
+#endif
 			}
 		}
 

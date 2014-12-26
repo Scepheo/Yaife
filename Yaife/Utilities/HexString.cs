@@ -44,7 +44,8 @@ namespace Yaife.Utilities
 		/// <returns>The hexadecimal representation of a byte array.</returns>
 		public static string ToHexString(this byte[] array, int offset, int length)
 		{
-			var sb = new StringBuilder(length * 3 - 1);
+			var capacity = length > 0 ? length * 3 - 1 : length;
+			var sb = new StringBuilder(capacity);
 			
 			for (int i = 0; i < length; i++)
 			{
