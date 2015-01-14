@@ -44,6 +44,7 @@
 			this.adjustFrameCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.subtitlesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exportToSubRipsrtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exportToSubStationAlphaassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.InputMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.trimEmptyFramesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.goToFrameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +61,6 @@
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.statusProgressLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-			this.exportToSubStationAlphaassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.MainMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.statusStrip.SuspendLayout();
@@ -183,6 +183,13 @@
 			this.exportToSubRipsrtToolStripMenuItem.Text = "Export to SubRip (.srt)";
 			this.exportToSubRipsrtToolStripMenuItem.Click += new System.EventHandler(this.exportToSubRipsrtToolStripMenuItem_Click);
 			// 
+			// exportToSubStationAlphaassToolStripMenuItem
+			// 
+			this.exportToSubStationAlphaassToolStripMenuItem.Name = "exportToSubStationAlphaassToolStripMenuItem";
+			this.exportToSubStationAlphaassToolStripMenuItem.Size = new System.Drawing.Size(299, 24);
+			this.exportToSubStationAlphaassToolStripMenuItem.Text = "Export to Sub Station Alpha (.ssa)";
+			this.exportToSubStationAlphaassToolStripMenuItem.Click += new System.EventHandler(this.exportToSubStationAlphaassToolStripMenuItem_Click);
+			// 
 			// InputMenu
 			// 
 			this.InputMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -196,7 +203,7 @@
 			// trimEmptyFramesToolStripMenuItem
 			// 
 			this.trimEmptyFramesToolStripMenuItem.Name = "trimEmptyFramesToolStripMenuItem";
-			this.trimEmptyFramesToolStripMenuItem.Size = new System.Drawing.Size(205, 24);
+			this.trimEmptyFramesToolStripMenuItem.Size = new System.Drawing.Size(215, 24);
 			this.trimEmptyFramesToolStripMenuItem.Text = "Trim Empty Frames";
 			this.trimEmptyFramesToolStripMenuItem.ToolTipText = "Removes empty frames at the end of the input log.";
 			this.trimEmptyFramesToolStripMenuItem.Click += new System.EventHandler(this.trimEmptyFramesToolStripMenuItem_Click);
@@ -204,7 +211,8 @@
 			// goToFrameToolStripMenuItem
 			// 
 			this.goToFrameToolStripMenuItem.Name = "goToFrameToolStripMenuItem";
-			this.goToFrameToolStripMenuItem.Size = new System.Drawing.Size(205, 24);
+			this.goToFrameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+			this.goToFrameToolStripMenuItem.Size = new System.Drawing.Size(215, 24);
 			this.goToFrameToolStripMenuItem.Text = "Go To Frame";
 			this.goToFrameToolStripMenuItem.ToolTipText = "Jump to a given frame.";
 			this.goToFrameToolStripMenuItem.Click += new System.EventHandler(this.goToFrameToolStripMenuItem_Click);
@@ -323,13 +331,6 @@
 			this.statusProgressBar.AutoSize = false;
 			this.statusProgressBar.Name = "statusProgressBar";
 			this.statusProgressBar.Size = new System.Drawing.Size(200, 18);
-			// 
-			// exportToSubStationAlphaassToolStripMenuItem
-			// 
-			this.exportToSubStationAlphaassToolStripMenuItem.Name = "exportToSubStationAlphaassToolStripMenuItem";
-			this.exportToSubStationAlphaassToolStripMenuItem.Size = new System.Drawing.Size(299, 24);
-			this.exportToSubStationAlphaassToolStripMenuItem.Text = "Export to Sub Station Alpha (.ssa)";
-			this.exportToSubStationAlphaassToolStripMenuItem.Click += new System.EventHandler(this.exportToSubStationAlphaassToolStripMenuItem_Click);
 			// 
 			// MainForm
 			// 
