@@ -171,10 +171,10 @@ namespace Yaife
 			if (!Clipboard.ContainsText())
 				return;
 
-			var split = Clipboard.GetText().Split(new string[]{ Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+			var split = Clipboard.GetText().Split(new string[]{ Environment.NewLine }, StringSplitOptions.None);
 			var rows = new List<DataGridViewRow>();
 
-			for (int i = 0; i < split.Length; i += Columns.Count)
+			for (int i = 0; i + Columns.Count <= split.Length; i += Columns.Count)
 			{
 				var values = new string[Columns.Count];
 				Array.Copy(split, i, values, 0, Columns.Count);
