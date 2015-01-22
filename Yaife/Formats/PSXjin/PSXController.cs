@@ -7,7 +7,8 @@ namespace Yaife.Formats.PSXjin
 	{
 		public abstract void Parse(string[] str);
 		public abstract string[] ToStrings();
-		public abstract byte[] GetBytes(bool text);
+		public abstract byte[] GetBytes();
+		public abstract string GetText();
 		public abstract bool IsEmpty();
 
 		public static PSXController GetController(PSXControllerType type, byte[] data, bool text)
@@ -74,6 +75,14 @@ namespace Yaife.Formats.PSXjin
 		Square   = 0x8000
 	}
 
+	[Flags]
+	public enum MouseButtons : ushort
+	{
+		None  = 0x0000,
+		Left  = 0x0001,
+		Right = 0x0002
+	}
+
 	public class StandardController : PSXController
 	{
 		private Buttons buttons;
@@ -92,6 +101,12 @@ namespace Yaife.Formats.PSXjin
 					if (str[i] != '.')
 						flags |= 1;
 				}
+
+				// Read select
+				flags <<= 3;
+
+				if (str[13] != '.')
+					flags |= 1;
 
 				this.buttons = (Buttons)flags;
 			}
@@ -112,7 +127,7 @@ namespace Yaife.Formats.PSXjin
 			return new string[] { buttons.ToString() };
 		}
 
-		public override byte[] GetBytes(bool text)
+		public override byte[] GetBytes()
 		{
 			var result = new byte[2];
 
@@ -123,6 +138,26 @@ namespace Yaife.Formats.PSXjin
 			return result;
 		}
 
+		public override string GetText()
+		{
+			var result = "..............".ToCharArray();
+			var codes  = "#X0^1234LDRUSs".ToCharArray();
+
+			// Select is weird, so we do that separately
+			for (int i = 0; i < 13; i++)
+			{
+				var flag = (Buttons)(0x8000 >> i);
+
+				if (buttons.HasFlag(flag))
+					result[i] = codes[i];
+			}
+
+			if (buttons.HasFlag(Buttons.Select))
+				result[13] = codes[13];
+
+			return new string(result);
+		}
+
 		public override bool IsEmpty()
 		{
 			return (buttons == Buttons.None);
@@ -131,20 +166,37 @@ namespace Yaife.Formats.PSXjin
 
 	public class Mouse : PSXController
 	{
-		private Buttons buttons;
+		private MouseButtons buttons;
 		private sbyte dX, dY;
 
 		public Mouse(byte[] data, bool text)
 		{
-			var x = (ushort)(data[0] | (data[1] << 8));
-			this.buttons = (Buttons)x;
-			this.dX = (sbyte)(data[2] - 128);
-			this.dY = (sbyte)(data[3] - 128);
+			if (text)
+			{
+				var str = ASCIIEncoding.ASCII.GetString(data);
+
+				this.buttons = MouseButtons.None;
+
+				if (str[0] != '.')
+					buttons |= MouseButtons.Left;
+				if (str[1] != '.')
+					buttons |= MouseButtons.Right;
+
+				this.dX = sbyte.Parse(str.Substring(3, 3));
+				this.dY = sbyte.Parse(str.Substring(7, 3));
+			}
+			else
+			{
+				var x = (ushort)(data[0] | (data[1] << 8));
+				this.buttons = (MouseButtons)x;
+				this.dX = (sbyte)(data[2] - 128);
+				this.dY = (sbyte)(data[3] - 128);
+			}
 		}
 
 		public override void Parse(string[] str)
 		{
-			this.buttons = (Buttons)Enum.Parse(typeof(Buttons), str[0]);
+			this.buttons = (MouseButtons)Enum.Parse(typeof(MouseButtons), str[0]);
 			
 			var movementSplit = str[1].Split(',');
 			dX = sbyte.Parse(movementSplit[0]);
@@ -161,7 +213,7 @@ namespace Yaife.Formats.PSXjin
 			return result;
 		}
 
-		public override byte[] GetBytes(bool text)
+		public override byte[] GetBytes()
 		{
 			var result = new byte[4];
 
@@ -174,9 +226,21 @@ namespace Yaife.Formats.PSXjin
 			return result;
 		}
 
+		public override string GetText()
+		{
+			var result = "";
+
+			result += buttons.HasFlag(MouseButtons.Left)  ? "L" : ".";
+			result += buttons.HasFlag(MouseButtons.Right) ? "R" : ".";
+
+			result += String.Format(" {0:D3} {1:D3}", dX, dY);
+
+			return result;
+		}
+
 		public override bool IsEmpty()
 		{
-			return (buttons == Buttons.None
+			return (buttons == MouseButtons.None
 				&& dX == 0 && dY == 0);
 		}
 	}
@@ -188,12 +252,37 @@ namespace Yaife.Formats.PSXjin
 
 		public AnalogController(byte[] data, bool text)
 		{
-			var x = (ushort)(data[0] | (data[1] << 8));
-			this.buttons = (Buttons)x;
-			this.leftX = (sbyte)(data[2] - 128);
-			this.leftY = (sbyte)(data[3] - 128);
-			this.rightX = (sbyte)(data[4] - 128);
-			this.rightY = (sbyte)(data[5] - 128);
+
+			if (text)
+			{
+				var str = ASCIIEncoding.ASCII.GetString(data);
+
+				ushort flags = 0;
+
+				for (int i = 0; i < 16; i++)
+				{
+					flags <<= 1;
+
+					if (str[i] != '.')
+						flags |= 1;
+				}
+
+				this.buttons = (Buttons)flags;
+
+				this.leftX  = sbyte.Parse(str.Substring(17, 3));
+				this.leftY  = sbyte.Parse(str.Substring(21, 3));
+				this.rightX = sbyte.Parse(str.Substring(25, 3));
+				this.rightY = sbyte.Parse(str.Substring(29, 3));
+			}
+			else
+			{
+				var x = (ushort)(data[0] | (data[1] << 8));
+				this.buttons = (Buttons)x;
+				this.leftX = (sbyte)(data[2] - 128);
+				this.leftY = (sbyte)(data[3] - 128);
+				this.rightX = (sbyte)(data[4] - 128);
+				this.rightY = (sbyte)(data[5] - 128);
+			}
 		}
 
 		public override void Parse(string[] str)
@@ -220,7 +309,7 @@ namespace Yaife.Formats.PSXjin
 			return result;
 		}
 
-		public override byte[] GetBytes(bool text)
+		public override byte[] GetBytes()
 		{
 			var result = new byte[6];
 
@@ -231,6 +320,25 @@ namespace Yaife.Formats.PSXjin
 			result[3] = (byte)(leftY + 128);
 			result[4] = (byte)(rightX + 128);
 			result[5] = (byte)(rightY + 128);
+
+			return result;
+		}
+
+		public override string GetText()
+		{
+			var flags = "................".ToCharArray();
+			var codes =  "#XO^1234LDRUSLRs".ToCharArray();
+
+			for (int i = 0; i < 16; i++)
+			{
+				var flag = (Buttons)(1 << (15 - i));
+
+				if (buttons.HasFlag(flag))
+					flags[i] = codes[i];
+			}
+
+			var result = new string(flags);
+			result += String.Format(" {0:D3} {1:D3} {2:D3} {3:D3}", leftX, leftY, rightX, rightY);
 
 			return result;
 		}

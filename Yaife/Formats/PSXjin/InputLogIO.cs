@@ -34,21 +34,24 @@ namespace Yaife.Formats.PSXjin
 		{
 			int port1DataSize;
 			int port2DataSize;
+			int controlDataSize;
 
 			if (text)
 			{
 				port1DataSize = TextDataSize[(int)port1];
 				port2DataSize = TextDataSize[(int)port2];
+				controlDataSize = 4;
 			}
 			else
 			{
 				port1DataSize = BinaryDataSize[(int)port1];
 				port2DataSize = BinaryDataSize[(int)port2];
+				controlDataSize = 1;
 			}
 
 			var data1 = new byte[port1DataSize];
 			var data2 = new byte[port2DataSize];
-			int control = 0;
+			var control = new byte[controlDataSize];
 
 			var list = new List<Frame>();
 			var endOfStream = false;
@@ -61,10 +64,10 @@ namespace Yaife.Formats.PSXjin
 					endOfStream = stream.Read(data2, 0, port2DataSize) < port2DataSize;
 
 				if (!endOfStream)
-					endOfStream = (control = stream.ReadByte()) == -1;
+					endOfStream = stream.Read(control, 0, controlDataSize) < controlDataSize;
 				
 				if (!endOfStream)
-					list.Add(new Frame(data1, port1, data2, port2, (byte)control, text));
+					list.Add(new Frame(data1, port1, data2, port2, control, text));
 			}
 
 			// Construct the headers

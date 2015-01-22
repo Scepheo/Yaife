@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Yaife.Utilities;
 
 namespace Yaife.Formats.PSXjin
@@ -74,13 +76,28 @@ namespace Yaife.Formats.PSXjin
 			ControllerDataOffset = reader.ReadUInt32();
 			AuthorNameLength     = reader.ReadUInt32();
 
-			Author = reader.ReadASCII((int)AuthorNameLength);
+			var authorBytes = new List<byte>();
+			byte b;
 
-			Savestate   = reader.ReadBytes((int)(MemoryCard1Offset    - SavestateOffset));
-			MemoryCard1 = reader.ReadBytes((int)(MemoryCard2Offset    - MemoryCard1Offset));
-			MemoryCard2 = reader.ReadBytes((int)(CheatListOffset      - MemoryCard2Offset));
-			CheatList   = reader.ReadBytes((int)(CDROMIDOffset        - CheatListOffset));
-			CDROMIDs    = reader.ReadBytes((int)(ControllerDataOffset - CDROMIDOffset));
+			while ((b = reader.ReadByte()) != 0)
+				authorBytes.Add(b);
+
+			Author = ASCIIEncoding.ASCII.GetString(authorBytes.ToArray());
+
+			stream.Seek(SavestateOffset, SeekOrigin.Begin);
+			Savestate = reader.ReadBytes((int)(MemoryCard1Offset - SavestateOffset));
+
+			stream.Seek(MemoryCard1Offset, SeekOrigin.Begin);
+			MemoryCard1 = reader.ReadBytes((int)(MemoryCard2Offset - MemoryCard1Offset));
+
+			stream.Seek(MemoryCard2Offset, SeekOrigin.Begin);
+			MemoryCard2 = reader.ReadBytes((int)(CheatListOffset - MemoryCard2Offset));
+
+			stream.Seek(CheatListOffset, SeekOrigin.Begin);
+			CheatList = reader.ReadBytes((int)(CDROMIDOffset - CheatListOffset));
+
+			stream.Seek(CDROMIDOffset, SeekOrigin.Begin);
+			CDROMIDs = reader.ReadBytes((int)(ControllerDataOffset - CDROMIDOffset));
 		}
 
 		public void Write(FileStream stream)

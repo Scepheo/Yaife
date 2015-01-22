@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Yaife.Formats.PSXjin
 {
@@ -22,16 +23,43 @@ namespace Yaife.Formats.PSXjin
 		private PSXControllerType type1, type2;
 
 		public Frame()
-			: this(new byte[2], PSXControllerType.StandardController, new byte[2], PSXControllerType.StandardController, 0, false)
+			: this(new byte[2], PSXControllerType.StandardController, new byte[2], PSXControllerType.StandardController, new byte[1], false)
 		{ }
 
-		public Frame(byte[] data1, PSXControllerType port1, byte[] data2, PSXControllerType port2, byte control, bool text)
+		public Frame(byte[] data1, PSXControllerType port1, byte[] data2, PSXControllerType port2, byte[] control, bool text)
 		{
 			this.type1 = port1;
 			this.type2 = port2;
 			this.controller1 = PSXController.GetController(port1, data1, text);
 			this.controller2 = PSXController.GetController(port2, data2, text);
-			this.console = (Console)control;
+			this.console = MakeControl(control, text);
+		}
+
+		public Console MakeControl(byte[] data, bool text)
+		{
+			Console result = Console.None;
+
+			if (text)
+			{
+				if (data[0] == 1)
+					result = Console.Reset;
+				if (data[0] == 2)
+					result = Console.ToggleCD;
+				if (data[0] == 3)
+					result = Console.SIOHack;
+				if (data[0] == 4)
+					result = Console.Cheats;
+				if (data[0] == 5)
+					result = Console.ResidentEvilHack;
+				if (data[0] == 6)
+					result = Console.ParasiteEveHack;
+			}
+			else
+			{
+				result = (Console)data[0];
+			}
+
+			return result;
 		}
 
 		public string[] ToStrings()
@@ -64,13 +92,52 @@ namespace Yaife.Formats.PSXjin
 
 		public byte[] GetBytes(bool text)
 		{
-			var b1 = controller1.GetBytes(text);
-			var b2 = controller2.GetBytes(text);
-			var result = new byte[b1.Length + b2.Length + 1];
+			byte[] result;
 
-			Array.Copy(b1, 0, result, 0,         b1.Length);
-			Array.Copy(b2, 0, result, b1.Length, b2.Length);
-			result[result.Length - 1] = (byte)console;
+			if (text)
+			{
+				var str = GetText();
+				result = ASCIIEncoding.ASCII.GetBytes(str);
+			}
+			else
+			{
+				var b1 = controller1.GetBytes();
+				var b2 = controller2.GetBytes();
+				result = new byte[b1.Length + b2.Length + 1];
+
+				Array.Copy(b1, 0, result, 0, b1.Length);
+				Array.Copy(b2, 0, result, b1.Length, b2.Length);
+				result[result.Length - 1] = (byte)console;
+			}
+
+			return result;
+		}
+
+		public string GetText()
+		{
+			string result = "";
+			result += controller1.GetText();
+			result += "|";
+			result += controller2.GetText();
+			result += "|";
+
+			int control = 0;
+
+			if (console.HasFlag(Console.Reset))
+				control = 1;
+			if (console.HasFlag(Console.ToggleCD))
+				control = 2;
+			if (console.HasFlag(Console.SIOHack))
+				control = 3;
+			if (console.HasFlag(Console.Cheats))
+				control = 4;
+			if (console.HasFlag(Console.ResidentEvilHack))
+				control = 5;
+			if (console.HasFlag(Console.ParasiteEveHack))
+				control = 6;
+
+			result += control.ToString();
+			result += "|\r\n";
 
 			return result;
 		}

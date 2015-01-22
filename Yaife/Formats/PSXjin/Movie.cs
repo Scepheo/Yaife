@@ -35,6 +35,8 @@ namespace Yaife.Formats.PSXjin
 			var file = new FileStream(path, FileMode.Open);
 			this.RealHeader = new Header();
 			RealHeader.Read(file);
+
+			file.Seek(RealHeader.ControllerDataOffset, SeekOrigin.Begin);
 			InputLog = InputLogIO.Read(file, RealHeader.ControllerTypePort1, RealHeader.ControllerTypePort2, RealHeader.TextFormat);
 
 			file.Close();
