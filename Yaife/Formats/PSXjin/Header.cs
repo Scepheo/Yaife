@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using Yaife.Utilities;
@@ -7,23 +8,77 @@ namespace Yaife.Formats.PSXjin
 {
 	public class Header
 	{
+		[Description("Unique file type signature, should be 50 4A 4D 20."),
+		Category("Movie File"),
+		TypeConverter(typeof(HexByteConverter))]
 		public byte[] Signature { get; set; }
+
+		[Description("Version number of the movie file format. 2 is most recent."),
+		Category("Movie File")]
 		public uint MovieVersion { get; set; }
+
+		[Description("Version number of the emulator used to record the movie."),
+		Category("Movie File")]
 		public uint EmulatorVersion { get; set; }
+
+		[Description("Indicates whether the movie starts from an embedded savestate (True) or power on (False)."),
+		Category("Movie File")]
 		public bool StartsFromSavestate { get; set; }
+
+		[Description("Indicates whether the game is PAL."),
+		Category("Game")]
 		public bool PAL { get; set; }
+
+		[Description("Indicates whether the movie file contains embedded memory card data."),
+		Category("Movie File")]
 		public bool ContainsMemoryCards { get; set; }
+
+		[Description("Indicates whether the movie contains an embedded cheat list."),
+		Category("Movie File")]
 		public bool ContainsCheats { get; set; }
+
+		[Description("Indicates whether the movie uses hacks, such as \"SPU/SIO IRQ always enabled\""),
+		Category("Configuration")]
 		public bool ContainsHacks { get; set; }
+
+		[Description("Indicates whether the input is stored in text (True) or binary (False) format."),
+		Category("Movie File")]
 		public bool TextFormat { get; set; }
+
+		[Description("Whether a multitap was connected to port 1."),
+		Category("Movie File")]
 		public bool MultitapPort1 { get; set; }
+
+		[Description("Whether a multitap was connected to port 2."),
+		Category("Movie File")]
 		public bool MultitapPort2 { get; set; }
+
+		[Description("Indicates whether the movie uses the analog hack."),
+		Category("Configuration")]
 		public bool AnalogHack { get; set; }
+
+		[Description("Indicates whether the movie uses the Parasite Eve 2, Vandal Hearts 1/2 fix."),
+		Category("Configuration")]
 		public bool ParasiteEveVandalHeartsFix { get; set; }
+		
+		[Description("The type of controller connected to port 1."),
+		Category("Movie File")]
 		public PSXControllerType ControllerTypePort1 { get; set; }
+
+		[Description("The type of controller connected to port 2."),
+		Category("Movie File")]
 		public PSXControllerType ControllerTypePort2 { get; set; }
+
+		[Description("The number of frames in the movie file."),
+		Category("Movie File")]
 		public uint FrameCount { get; set; }
+
+		[Description("The number of times a state was loaded during recording of this movie file."),
+		Category("Movie File")]
 		public uint RerecordCount { get; set; }
+
+		[Description("The name of the author."),
+		Category("Movie File")]
 		public string Author { get; set; }
 
 		// Not editable
@@ -34,12 +89,25 @@ namespace Yaife.Formats.PSXjin
 		public uint CDROMIDOffset;
 		public uint ControllerDataOffset;
 		public uint AuthorNameLength;
-
-		// More stuff
+		
+		[Description("The savestate the movie starts from, if it does not start from power on."),
+		Category("Movie File")]
 		public byte[] Savestate { get; set; }
+
+		[Description("Data of the memory card in slot 1."),
+		Category("Movie File")]
 		public byte[] MemoryCard1 { get; set; }
+
+		[Description("Data of the memory card in slot 2."),
+		Category("Movie File")]
 		public byte[] MemoryCard2 { get; set; }
+
+		[Description("A possibly empty list of cheats used."),
+		Category("Movie File")]
 		public byte[] CheatList { get; set; }
+
+		[Description("A list of the IDs of the CD-ROMs used in this movie."),
+		Category("Game")]
 		public byte[] CDROMIDs { get; set; }
 
 		public void Read(FileStream stream)
