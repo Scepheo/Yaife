@@ -5,7 +5,7 @@ namespace Yaife.Formats.PCSX
 {
 	public class Movie : IMovie, IFrameCount
 	{
-		public InputLog InputLog { get; private set; }
+		public InputLog InputLog { get; set; }
 
 		public Header RealHeader;
 		public object Header
@@ -20,7 +20,7 @@ namespace Yaife.Formats.PCSX
 
 		public string Description
 		{
-			get { return "PCSC-rr"; }
+			get { return "PCSX-rr"; }
 		}
 
 		public string[] Extensions

@@ -13,8 +13,11 @@ namespace Yaife.Formats.PSXjin
 			get { return RealHeader; }
 		}
 
-		public bool HasMenu { get { return false; } }
-		public ToolStripMenuItem GetMovieMenu(MovieTab tab) { return null; }
+		public bool HasMenu { get { return true; } }
+		public ToolStripMenuItem GetMovieMenu(MovieTab tab)
+		{
+			return new Menu(tab);
+		}
 
 		public string Path { get; set; }
 

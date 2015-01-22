@@ -127,6 +127,9 @@
     <Compile Include="Formats\PSXjin\Frame.cs" />
     <Compile Include="Formats\PSXjin\Header.cs" />
     <Compile Include="Formats\PSXjin\InputLogIO.cs" />
+    <Compile Include="Formats\PSXjin\Menu.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Formats\PSXjin\Movie.cs" />
     <Compile Include="Formats\PSXjin\PSXController.cs" />
     <Compile Include="Formats\PCSX\Frame.cs" />
