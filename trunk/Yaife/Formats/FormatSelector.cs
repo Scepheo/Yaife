@@ -13,7 +13,8 @@ namespace Yaife.Formats
 			typeof(Hourglass.Movie),
 			typeof(Dolphin.Movie),
 			typeof(PCSX.Movie),
-			typeof(VisualBoyAdvance.Movie)
+			typeof(VisualBoyAdvance.Movie),
+			typeof(PSXjin.Movie)
 		};
 
 		public static string GetFileFilter()
