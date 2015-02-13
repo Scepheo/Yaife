@@ -10,7 +10,7 @@ namespace Yaife.Formats.Hourglass
 
 		public Menu(MovieTab tab)
 		{
-			this.Text = "HourGlass";
+			this.Text = "Hourglass";
 			this.tab = tab;
 			this.movie = tab.Movie as Movie;
 

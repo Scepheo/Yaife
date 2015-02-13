@@ -111,6 +111,9 @@
     <Compile Include="Editors\PositionedSubtitle.cs" />
     <Compile Include="Formats\BizHawkBK2\Subtitles.cs" />
     <Compile Include="Formats\BizHawkBK2\SyncSettings.cs" />
+    <Compile Include="Formats\Dolphin\Menu.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Formats\Dolphin\WiiMoteFrame.cs" />
     <Compile Include="Formats\Dolphin\GameCubeFrame.cs" />
     <Compile Include="Formats\Dolphin\Header.cs" />

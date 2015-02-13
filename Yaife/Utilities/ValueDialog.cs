@@ -14,19 +14,22 @@ namespace Yaife.Utilities
 		where T : IComparable
 	{
 		/// <summary>
-		/// Gets the number returned by the dialog.
+		/// Gets the value entered by the user.
 		/// </summary>
 		public T Value { get; private set; }
 
 		private T defaultValue, minValue, maxValue;
+		private bool hasRange;
 		private Func<string, T> parse;
 
 		/// <summary>
-		/// Creates a dialog used for getting a number from the user.
+		/// Creates a dialog used for getting a value from the user, with a specified minimum and
+		/// maximum value to restrict the range of values the user can enter.
 		/// </summary>
 		/// <param name="message">The message to display alongside the number entry.</param>
 		/// <param name="caption">A caption for the dialog.</param>
 		/// <param name="defaultValue">The default number to display in the number entry.</param>
+		/// <param name="parse">A function used to parse a string entered into a value.</param>
 		/// <param name="minValue">The lowest value the user is allowed to enter.</param>
 		/// <param name="maxValue">The highest value the user is allowed to enter.</param>
 		public ValueDialog(string message, string caption, T defaultValue, Func<string, T> parse, T minValue, T maxValue)
@@ -41,6 +44,28 @@ namespace Yaife.Utilities
 			this.defaultValue = defaultValue;
 			this.minValue = minValue;
 			this.maxValue = maxValue;
+			this.hasRange = true;
+			this.parse = parse;
+		}
+
+		/// <summary>
+		/// Creates a dialog used for getting a value from the user.
+		/// </summary>
+		/// <param name="message">The message to display alongside the number entry.</param>
+		/// <param name="caption">A caption for the dialog.</param>
+		/// <param name="defaultValue">The default number to display in the number entry.</param>
+		/// <param name="parse">A function used to parse a string entered into a value.</param>
+		public ValueDialog(string message, string caption, T defaultValue, Func<string, T> parse)
+		{
+			InitializeComponent();
+			this.StartPosition = FormStartPosition.CenterParent;
+
+			messageLabel.Text = message;
+			this.Text = caption;
+			valueTextBox.Text = defaultValue.ToString();
+
+			this.defaultValue = defaultValue;
+			this.hasRange = false;
 			this.parse = parse;
 		}
 
@@ -60,7 +85,10 @@ namespace Yaife.Utilities
 				valid = false;
 			}
 
-			bool inRange = (minValue.CompareTo(value) <= 0) && (maxValue.CompareTo(value) >= 0);
+			bool inRange = true;
+			
+			if (hasRange)
+				inRange = (minValue.CompareTo(value) <= 0) && (maxValue.CompareTo(value) >= 0);
 
 			if (valid && inRange)
 			{
