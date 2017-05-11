@@ -8,23 +8,25 @@ namespace Yaife.Utilities
     {
         /// <summary>
         /// Parses the hexadecimal representation of a byte array. Assumes
-        /// spaces as separators for the bytes.
+        /// hyphens ("-") as separators for the bytes.
         /// </summary>
         public static byte[] Parse(string str)
         {
-            var split = str.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var split = str.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 
             var bytes = new byte[split.Length];
 
             for (var i = 0; i < bytes.Length; i++)
+            {
                 bytes[i] = byte.Parse(split[i], NumberStyles.HexNumber);
+            }
 
             return bytes;
         }
 
         /// <summary>
         /// Turns a byte array into a string of its hexadecimal representation.
-        /// Bytes will be separated by a space.
+        /// Bytes will be separated by a hyphen ("-").
         /// </summary>
         /// <param name="array">The array to convert.</param>
         /// <param name="offset">The index of the first byte to convert.</param>
@@ -36,7 +38,7 @@ namespace Yaife.Utilities
 
         /// <summary>
         /// Turns a byte array into a string of its hexadecimal representation.
-        /// Bytes will be separated by a space.
+        /// Bytes will be separated by a hyphen ("-").
         /// </summary>
         /// <param name="array">The array to convert.</param>
         /// <param name="offset">The index of the first byte to convert.</param>
@@ -44,18 +46,7 @@ namespace Yaife.Utilities
         /// <returns>The hexadecimal representation of a byte array.</returns>
         public static string ToHexString(this byte[] array, int offset, int length)
         {
-            var capacity = length > 0 ? length * 3 - 1 : length;
-            var sb = new StringBuilder(capacity);
-            
-            for (var i = 0; i < length; i++)
-            {
-                sb.Append(array[offset + i].ToString("X2"));
-
-                if (i < length - 1)
-                    sb.Append(" ");
-            }
-
-            return sb.ToString();
+            return BitConverter.ToString(array, offset, length);
         }
     }
 }

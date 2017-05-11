@@ -36,13 +36,13 @@ namespace Yaife.Utilities
             return dialog.ShowDialog();
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void copyButton_Click(object sender, EventArgs e)
+        private void CopyButton_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(copyTextBox.Text);
         }

@@ -13,12 +13,12 @@ namespace Yaife.Editors
 
         private string ToSubRip(int num, float fps)
         {
-            var str = num + Environment.NewLine;
-            str += SubRipTime(Frame / fps) + " --> " + SubRipTime((Frame + Length) / fps);
-            str += Environment.NewLine;
-            str += Text + Environment.NewLine;
-            str += Environment.NewLine;
-            return str;
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(num.ToString());
+            stringBuilder.AppendLine($"{SubRipTime(Frame / fps)} --> {SubRipTime((Frame + Length) / fps)}");
+            stringBuilder.AppendLine(Text);
+            stringBuilder.AppendLine();
+            return stringBuilder.ToString();
         }
 
         private static string SubRipTime(float timeInSeconds)
@@ -33,12 +33,14 @@ namespace Yaife.Editors
 
         public static string ToSubRip(Subtitle[] subs, float fps)
         {
-            var str = "";
-
+            var stringBuilder = new StringBuilder();
+            
             for (var i = 0; i < subs.Length; i++)
-                str += subs[i].ToSubRip(i + 1, fps);
+            {
+                stringBuilder.Append(subs[i].ToSubRip(i + 1, fps));
+            }
 
-            return str;
+            return stringBuilder.ToString();
         }
 
         private string ToSubStationAlpha(float fps)

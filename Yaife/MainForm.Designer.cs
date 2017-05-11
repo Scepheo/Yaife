@@ -116,7 +116,7 @@ namespace Yaife
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(221, 24);
             this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
@@ -125,7 +125,7 @@ namespace Yaife
             | System.Windows.Forms.Keys.S)));
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(221, 24);
             this.saveAsToolStripMenuItem.Text = "Save As ...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -137,7 +137,7 @@ namespace Yaife
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(221, 24);
             this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -150,7 +150,7 @@ namespace Yaife
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(221, 24);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // HeaderMenu
             // 
@@ -160,7 +160,7 @@ namespace Yaife
             this.HeaderMenu.Name = "HeaderMenu";
             this.HeaderMenu.Size = new System.Drawing.Size(70, 24);
             this.HeaderMenu.Text = "Header";
-            this.HeaderMenu.DropDownOpening += new System.EventHandler(this.headerMenu_DropDownOpening);
+            this.HeaderMenu.DropDownOpening += new System.EventHandler(this.HeaderMenu_DropDownOpening);
             // 
             // adjustFrameCountToolStripMenuItem
             // 
@@ -168,7 +168,7 @@ namespace Yaife
             this.adjustFrameCountToolStripMenuItem.Size = new System.Drawing.Size(208, 24);
             this.adjustFrameCountToolStripMenuItem.Text = "Adjust Frame Count";
             this.adjustFrameCountToolStripMenuItem.ToolTipText = "Sets the header frame count property to match the length of the input log.";
-            this.adjustFrameCountToolStripMenuItem.Click += new System.EventHandler(this.adjustFrameCountToolStripMenuItem_Click);
+            this.adjustFrameCountToolStripMenuItem.Click += new System.EventHandler(this.AdjustFrameCountToolStripMenuItem_Click);
             // 
             // subtitlesToolStripMenuItem
             // 
@@ -184,14 +184,14 @@ namespace Yaife
             this.exportToSubRipsrtToolStripMenuItem.Name = "exportToSubRipsrtToolStripMenuItem";
             this.exportToSubRipsrtToolStripMenuItem.Size = new System.Drawing.Size(299, 24);
             this.exportToSubRipsrtToolStripMenuItem.Text = "Export to SubRip (.srt)";
-            this.exportToSubRipsrtToolStripMenuItem.Click += new System.EventHandler(this.exportToSubRipsrtToolStripMenuItem_Click);
+            this.exportToSubRipsrtToolStripMenuItem.Click += new System.EventHandler(this.ExportToSubRipsrtToolStripMenuItem_Click);
             // 
             // exportToSubStationAlphaassToolStripMenuItem
             // 
             this.exportToSubStationAlphaassToolStripMenuItem.Name = "exportToSubStationAlphaassToolStripMenuItem";
             this.exportToSubStationAlphaassToolStripMenuItem.Size = new System.Drawing.Size(299, 24);
             this.exportToSubStationAlphaassToolStripMenuItem.Text = "Export to Sub Station Alpha (.ssa)";
-            this.exportToSubStationAlphaassToolStripMenuItem.Click += new System.EventHandler(this.exportToSubStationAlphaassToolStripMenuItem_Click);
+            this.exportToSubStationAlphaassToolStripMenuItem.Click += new System.EventHandler(this.ExportToSubStationAlphaassToolStripMenuItem_Click);
             // 
             // InputMenu
             // 
@@ -209,7 +209,7 @@ namespace Yaife
             this.trimEmptyFramesToolStripMenuItem.Size = new System.Drawing.Size(215, 24);
             this.trimEmptyFramesToolStripMenuItem.Text = "Trim Empty Frames";
             this.trimEmptyFramesToolStripMenuItem.ToolTipText = "Removes empty frames at the end of the input log.";
-            this.trimEmptyFramesToolStripMenuItem.Click += new System.EventHandler(this.trimEmptyFramesToolStripMenuItem_Click);
+            this.trimEmptyFramesToolStripMenuItem.Click += new System.EventHandler(this.TrimEmptyFramesToolStripMenuItem_Click);
             // 
             // goToFrameToolStripMenuItem
             // 
@@ -218,7 +218,7 @@ namespace Yaife
             this.goToFrameToolStripMenuItem.Size = new System.Drawing.Size(215, 24);
             this.goToFrameToolStripMenuItem.Text = "Go To Frame";
             this.goToFrameToolStripMenuItem.ToolTipText = "Jump to a given frame.";
-            this.goToFrameToolStripMenuItem.Click += new System.EventHandler(this.goToFrameToolStripMenuItem_Click);
+            this.goToFrameToolStripMenuItem.Click += new System.EventHandler(this.GoToFrameToolStripMenuItem_Click);
             // 
             // toolsMenu
             // 
@@ -245,7 +245,7 @@ namespace Yaife
             this.crc32Menu.Size = new System.Drawing.Size(186, 24);
             this.crc32Menu.Text = "Calculate CRC32";
             this.crc32Menu.ToolTipText = "Calculate the 32-bit CRC for a selected file.";
-            this.crc32Menu.Click += new System.EventHandler(this.crc32Menu_Click);
+            this.crc32Menu.Click += new System.EventHandler(this.Crc32Menu_Click);
             // 
             // md5Menu
             // 
@@ -253,7 +253,7 @@ namespace Yaife
             this.md5Menu.Size = new System.Drawing.Size(186, 24);
             this.md5Menu.Text = "Calculate MD5";
             this.md5Menu.ToolTipText = "Calculate the MD5 hash for a selected file.";
-            this.md5Menu.Click += new System.EventHandler(this.md5Menu_Click);
+            this.md5Menu.Click += new System.EventHandler(this.Md5Menu_Click);
             // 
             // sha1Menu
             // 
@@ -261,7 +261,7 @@ namespace Yaife
             this.sha1Menu.Size = new System.Drawing.Size(186, 24);
             this.sha1Menu.Text = "Calculate SHA1";
             this.sha1Menu.ToolTipText = "Calculate the SHA1 hash for a selected file.";
-            this.sha1Menu.Click += new System.EventHandler(this.sha1Menu_Click);
+            this.sha1Menu.Click += new System.EventHandler(this.Sha1Menu_Click);
             // 
             // MainTabControl
             // 
@@ -284,7 +284,7 @@ namespace Yaife
             this.closeMenuItem});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.Size = new System.Drawing.Size(218, 76);
-            this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenu_Opening);
+            this.contextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenu_Opening);
             // 
             // saveMenuItem
             // 
@@ -292,7 +292,7 @@ namespace Yaife
             this.saveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveMenuItem.Size = new System.Drawing.Size(217, 24);
             this.saveMenuItem.Text = "Save";
-            this.saveMenuItem.Click += new System.EventHandler(this.saveMenuItem_Click);
+            this.saveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
             // saveAsMenuItem
             // 
@@ -301,7 +301,7 @@ namespace Yaife
             | System.Windows.Forms.Keys.S)));
             this.saveAsMenuItem.Size = new System.Drawing.Size(217, 24);
             this.saveAsMenuItem.Text = "Save As...";
-            this.saveAsMenuItem.Click += new System.EventHandler(this.saveAsMenuItem_Click);
+            this.saveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
             // closeMenuItem
             // 
@@ -309,7 +309,7 @@ namespace Yaife
             this.closeMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
             this.closeMenuItem.Size = new System.Drawing.Size(217, 24);
             this.closeMenuItem.Text = "Close";
-            this.closeMenuItem.Click += new System.EventHandler(this.closeMenuItem_Click);
+            this.closeMenuItem.Click += new System.EventHandler(this.CloseMenuItem_Click);
             // 
             // statusStrip
             // 

@@ -11,8 +11,8 @@ namespace Yaife.Editors
     {
         public PositionedSubtitle[] PositionedSubtitles
         {
-            get { return positionedSubtitlesBindingSource.Cast<PositionedSubtitle>().ToArray(); }
-            set { positionedSubtitlesBindingSource.DataSource = value; }
+            get => positionedSubtitlesBindingSource.Cast<PositionedSubtitle>().ToArray();
+            set => positionedSubtitlesBindingSource.DataSource = value;
         }
 
         public PositionedSubtitleForm()
@@ -20,13 +20,13 @@ namespace Yaife.Editors
             InitializeComponent();
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -56,9 +56,7 @@ namespace Yaife.Editors
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var subtitles = value as PositionedSubtitle[];
-
-            if (subtitles != null && destinationType == typeof(string))
+            if (value is PositionedSubtitle[] subtitles && destinationType == typeof(string))
             {
                 return subtitles.Length > 0 ? subtitles[0].Text : "";
             }

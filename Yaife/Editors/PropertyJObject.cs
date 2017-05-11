@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Newtonsoft.Json.Linq;
@@ -96,7 +97,9 @@ namespace Yaife.Editors
             var list = new List<PropertyDescriptor>();
 
             foreach (var pair in _internalObject)
+            {
                 list.Add(new DynamicPropertyDescriptor(this, pair.Key, ConvertType(pair.Value.Type), attributes));
+            }
 
             return new PropertyDescriptorCollection(list.ToArray());
         }

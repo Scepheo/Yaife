@@ -64,7 +64,7 @@ namespace Yaife.Utilities
             _parse = parse;
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             T value;
             bool valid;
@@ -81,9 +81,11 @@ namespace Yaife.Utilities
             }
 
             var inRange = true;
-            
+
             if (_hasRange)
+            {
                 inRange = _minValue.CompareTo(value) <= 0 && _maxValue.CompareTo(value) >= 0;
+            }
 
             if (valid && inRange)
             {
@@ -102,7 +104,7 @@ namespace Yaife.Utilities
             }
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             Value = _defaultValue;
             DialogResult = DialogResult.Cancel;

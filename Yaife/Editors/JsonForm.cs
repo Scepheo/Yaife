@@ -13,10 +13,8 @@ namespace Yaife.Editors
 
         public dynamic Object
         {
-            get
-            {
-                return _internalObject;
-            }
+            get => _internalObject;
+
             set
             {
                 _internalObject = value;
@@ -29,13 +27,13 @@ namespace Yaife.Editors
             InitializeComponent();
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -65,10 +63,9 @@ namespace Yaife.Editors
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (value is JObject && destinationType == typeof(string))
+            if (value is JObject jObject && destinationType == typeof(string))
             {
-                var obj = value as JObject;
-                return obj.ToString();
+                return jObject.ToString();
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

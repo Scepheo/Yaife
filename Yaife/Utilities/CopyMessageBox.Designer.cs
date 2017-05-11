@@ -58,7 +58,7 @@ namespace Yaife.Utilities
             this.okButton.TabIndex = 1;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // copyLabel
             // 
@@ -78,7 +78,7 @@ namespace Yaife.Utilities
             this.copyButton.TabIndex = 3;
             this.copyButton.Text = "Copy to Clipboard";
             this.copyButton.UseVisualStyleBackColor = true;
-            this.copyButton.Click += new System.EventHandler(this.copyButton_Click);
+            this.copyButton.Click += new System.EventHandler(this.CopyButton_Click);
             // 
             // CopyMessageBox
             // 

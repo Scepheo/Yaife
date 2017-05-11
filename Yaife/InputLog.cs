@@ -12,7 +12,7 @@ namespace Yaife
     {
         private const string InputKey = "Input";
         private ContextMenuStrip _contextMenu;
-        private IContainer components;
+        private IContainer _components;
         private ToolStripMenuItem _copyMenuItem;
         private ToolStripMenuItem _pasteMenuItem;
         private ToolStripMenuItem _deleteMenuItem;
@@ -23,22 +23,25 @@ namespace Yaife
             get
             {
                 foreach (DataGridViewRow row in Rows)
+                {
                     if (row.Cells[0].Value != null)
                     {
                         var array = new string[row.Cells.Count];
 
                         for (var i = 0; i < row.Cells.Count; i++)
+                        {
                             array[i] = row.Cells[i].Value.ToString();
+                        }
 
                         yield return array;
                     }
+                }
             }
         }
 
         public bool PendingChanges;
 
-        public InputLog() : this(new string[0], new List<IFrame>())
-        {}
+        public InputLog() : this(new string[0], new List<IFrame>()) {}
 
         public InputLog(string[] headers, IEnumerable<IFrame> frames)
         {
@@ -46,7 +49,9 @@ namespace Yaife
 
             // Add columns
             foreach (var header in headers)
+            {
                 Columns.Add(header, header);
+            }
 
             // Settings
             AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(244, 247, 252);
@@ -70,6 +75,7 @@ namespace Yaife
             var array = new DataGridViewRow[frames.Count()];
             var i = 0;
             var update = array.Length / 20;
+
             foreach (var frame in frames)
             {
                 array[i] = new DataGridViewRow();
@@ -78,7 +84,9 @@ namespace Yaife
 
                 // Update progress bar
                 if (i % update == 0)
+                {
                     MainForm.ProgressBar.Value = MainForm.ProgressBar.Maximum * i / array.Length;
+                }
             }
 
             // Insert the created rows
@@ -89,7 +97,6 @@ namespace Yaife
 
             // Event handlers for row renumbering
             RowsAdded   += (s, e) => { NumberRows(e.RowIndex); PendingChanges = true; };
-            //RowsRemoved += (s, e) => { numberRows(e.RowIndex); PendingChanges = true; };
 
             // Event handler for content changing
             CellValueChanged += (s, e) => PendingChanges = true;
@@ -101,7 +108,9 @@ namespace Yaife
         private void NumberRows(int from)
         {
             for (var i = from; i < Rows.Count; i++)
+            {
                 Rows[i].HeaderCell.Value = (i + 1).ToString();
+            }
         }
 
         private void Delete()
@@ -112,12 +121,11 @@ namespace Yaife
             foreach (DataGridViewRow row in SelectedRows)
             {
                 if (row.Index < lowIndex)
+                {
                     lowIndex = row.Index;
+                }
 
                 count++;
-
-                //if (!row.IsNewRow)
-                    //Rows.Remove(row);
             }
 
             // Copy all rows
@@ -139,7 +147,9 @@ namespace Yaife
 
             // Scroll back
             if (scrollIndex >= RowCount)
+            {
                 scrollIndex = RowCount - 1;
+            }
 
             FirstDisplayedScrollingRowIndex = scrollIndex;
 
@@ -157,17 +167,22 @@ namespace Yaife
             SelectedRows.CopyTo(rows, 0);
 
             foreach (var row in rows.OrderBy(r => r.Index))
+            {
                 if (!row.IsNewRow)
+                {
                     for (var i = 0; i < row.Cells.Count; i++)
+                    {
                         sb.Append(row.Cells[i].Value + Environment.NewLine);
+                    }
+                }
+            }
 
             Clipboard.SetText(sb.ToString());
         }
 
         private void Paste()
         {
-            if (!Clipboard.ContainsText())
-                return;
+            if (!Clipboard.ContainsText()) return;
 
             var split = Clipboard.GetText().Split(new[]{ Environment.NewLine }, StringSplitOptions.None);
             var rows = new List<DataGridViewRow>();
@@ -193,8 +208,8 @@ namespace Yaife
 
         private void InitializeComponent()
         {
-            components = new Container();
-            _contextMenu = new ContextMenuStrip(components);
+            _components = new Container();
+            _contextMenu = new ContextMenuStrip(_components);
             _copyMenuItem = new ToolStripMenuItem();
             _pasteMenuItem = new ToolStripMenuItem();
             _deleteMenuItem = new ToolStripMenuItem();
@@ -247,7 +262,6 @@ namespace Yaife
             _contextMenu.ResumeLayout(false);
             ((ISupportInitialize)this).EndInit();
             ResumeLayout(false);
-
         }
     }
 }

@@ -41,11 +41,13 @@ namespace Yaife
             HeaderControl = new PropertyGrid
             {
                 SelectedObject = movie.Header,
-                Dock = DockStyle.Fill
+                Dock = DockStyle.Fill,
+                ContextMenuStrip = new ContextMenuStrip()
             };
-            HeaderPanel.Controls.Add(HeaderControl);
-            HeaderControl.ContextMenuStrip = new ContextMenuStrip();
+
             HeaderControl.PropertyValueChanged += (s, e) => _headerChanges = true;
+
+            HeaderPanel.Controls.Add(HeaderControl);
 
             // Set status label
             MainForm.ProgressLabel.Text = "Opened file";
@@ -54,11 +56,9 @@ namespace Yaife
         public void Save()
         {
             var tempFile = Path.GetTempFileName();
-
-#if !DEBUG
+            
             try
             {
-#endif
                 // Attempt to save to temporary file
                 Movie.WriteFile(tempFile);
 
@@ -71,8 +71,8 @@ namespace Yaife
 
                 // Set status text
                 MainForm.ProgressLabel.Text = "Saved file";
-#if !DEBUG
             }
+#if !DEBUG
             catch (Exception e)
             {
                 // Display error
@@ -83,15 +83,15 @@ namespace Yaife
                         MessageBoxIcon.Error
                         );
             }
+#endif
             finally
             {
-#endif
                 // Clean up temporary file
                 if (File.Exists(tempFile))
+                {
                     File.Delete(tempFile);
-#if !DEBUG
+                }
             }
-#endif
         }
 
         public void SaveAs(string path)
