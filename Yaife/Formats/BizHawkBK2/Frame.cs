@@ -1,22 +1,22 @@
 ﻿namespace Yaife.Formats.BizHawkBK2
 {
-	public class Frame : IFrame
-	{
-		private string content;
+    public class Frame : IFrame
+    {
+        private string _content;
 
-		public Frame(string line)
-		{
-			this.content = line;
-		}
+        public Frame(string line)
+        {
+            _content = line;
+        }
 
-		public string[] ToStrings()
-		{
-			return new string[] { content };
-		}
+        public object[] ToStrings()
+        {
+            return new[] { _content };
+        }
 
-		public void Parse(string[] strings)
-		{
-			this.content = strings[0];
-		}
-	}
+        public void Parse(string[] strings)
+        {
+            _content = strings[0];
+        }
+    }
 }

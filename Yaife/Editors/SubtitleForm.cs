@@ -5,76 +5,65 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Yaife
+namespace Yaife.Editors
 {
-	public partial class SubtitleForm : Form
-	{
-		public Subtitle[] Subtitles
-		{
-			get { return subtitlesBindingSource.Cast<Subtitle>().ToArray(); }
-			set { subtitlesBindingSource.DataSource = value; }
-		}
+    public partial class SubtitleForm : Form
+    {
+        public Subtitle[] Subtitles
+        {
+            get { return subtitlesBindingSource.Cast<Subtitle>().ToArray(); }
+            set { subtitlesBindingSource.DataSource = value; }
+        }
 
-		public SubtitleForm()
-		{
-			InitializeComponent();
-		}
+        public SubtitleForm()
+        {
+            InitializeComponent();
+        }
 
-		private void okButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
 
-		private void cancelButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
-	}
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+    }
 
-	public class SubtitleEditor : UITypeEditor
-	{
-		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-		{
-			return UITypeEditorEditStyle.Modal;
-		}
+    public class SubtitleEditor : UITypeEditor
+    {
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
+        }
 
-		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
-		{
-			var form = new SubtitleForm();
-			form.Subtitles = value as Subtitle[];
+        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+        {
+            var form = new SubtitleForm { Subtitles = value as Subtitle[] };
+            return form.ShowDialog() == DialogResult.OK ? form.Subtitles : value;
+        }
+    }
 
-			if (form.ShowDialog() == DialogResult.OK)
-				return form.Subtitles;
-			else
-				return value;
-		}
-	}
+    public class SubtitleConverter : ExpandableObjectConverter
+    {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            return destinationType == typeof(Subtitle[]) || base.CanConvertTo(context, destinationType);
+        }
 
-	public class SubtitleConverter : ExpandableObjectConverter
-	{
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-		{
-			if (destinationType == typeof(Subtitle[]))
-				return true;
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            var subtitles = value as Subtitle[];
 
-			return base.CanConvertTo(context, destinationType);
-		}
+            if (subtitles != null && destinationType == typeof(string))
+            {
+                return subtitles.Length > 0 ? subtitles[0].Text : "";
+            }
 
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-		{
-			if (value is Subtitle[] && destinationType == typeof(string))
-			{
-				var array = value as Subtitle[];
-
-				if (array.Length > 0)
-					return array[0].Text;
-				else
-					return "";
-			}
-
-			return base.ConvertTo(context, culture, value, destinationType);
-		}
-	}
+            return base.ConvertTo(context, culture, value, destinationType);
+        }
+    }
 }

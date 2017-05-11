@@ -5,81 +5,73 @@ using System.Globalization;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 
-namespace Yaife
+namespace Yaife.Editors
 {
-	public partial class JsonForm : Form
-	{
-		JObject internalObject;
+    public partial class JsonForm : Form
+    {
+        private JObject _internalObject;
 
-		public dynamic Object
-		{
-			get
-			{
-				return internalObject;
-			}
-			set
-			{
-				internalObject = value;
-				propertyGrid.SelectedObject = new PropertyJObject(internalObject);
-			}
-		}
+        public dynamic Object
+        {
+            get
+            {
+                return _internalObject;
+            }
+            set
+            {
+                _internalObject = value;
+                propertyGrid.SelectedObject = new PropertyJObject(_internalObject);
+            }
+        }
 
-		public JsonForm()
-		{
-			InitializeComponent();
-		}
+        public JsonForm()
+        {
+            InitializeComponent();
+        }
 
-		private void okButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
 
-		private void cancelButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
-	}
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+    }
 
-	public class JsonEditor : UITypeEditor
-	{
-		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-		{
-			return UITypeEditorEditStyle.Modal;
-		}
+    public class JsonEditor : UITypeEditor
+    {
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
+        }
 
-		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
-		{
-			var form = new JsonForm();
-			form.Object = value as JObject;
+        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+        {
+            var form = new JsonForm { Object = value as JObject };
+            return form.ShowDialog() == DialogResult.OK ? form.Object : value;
+        }
+    }
 
-			if (form.ShowDialog() == DialogResult.OK)
-				return form.Object;
-			else
-				return value;
-		}
-	}
+    public class JsonConverter : ExpandableObjectConverter
+    {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            return destinationType == typeof(JObject) || base.CanConvertTo(context, destinationType);
+        }
 
-	public class JsonConverter : ExpandableObjectConverter
-	{
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-		{
-			if (destinationType == typeof(JObject))
-				return true;
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            if (value is JObject && destinationType == typeof(string))
+            {
+                var obj = value as JObject;
+                return obj.ToString();
+            }
 
-			return base.CanConvertTo(context, destinationType);
-		}
-
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-		{
-			if (value is JObject && destinationType == typeof(string))
-			{
-				var obj = value as JObject;
-				return obj.ToString();
-			}
-
-			return base.ConvertTo(context, culture, value, destinationType);
-		}
-	}
+            return base.ConvertTo(context, culture, value, destinationType);
+        }
+    }
 }

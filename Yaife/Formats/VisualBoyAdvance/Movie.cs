@@ -1,67 +1,59 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Yaife.FormatInterfaces;
 
 namespace Yaife.Formats.VisualBoyAdvance
 {
-	public class Movie : IMovie, IFrameCount
-	{
-		public InputLog InputLog { get; private set; }
+    public class Movie : IMovie, IFrameCount
+    {
+        public InputLog InputLog { get; private set; }
 
-		public Header RealHeader;
-		public object Header
-		{
-			get { return RealHeader; }
-		}
+        public Header RealHeader;
+        public object Header => RealHeader;
 
-		public bool HasMenu { get { return false; } }
-		public ToolStripMenuItem GetMovieMenu(MovieTab tab) { return null; }
+        public bool HasMenu => false;
+        public ToolStripMenuItem GetMovieMenu(MovieTab tab) { return null; }
 
-		public string Path { get; set; }
+        public string Path { get; set; }
 
-		public string Description
-		{
-			get { return "VisualBoyAdvance"; }
-		}
+        public string Description => "VisualBoyAdvance";
 
-		public string[] Extensions
-		{
-			get { return new string[] { ".vbm" }; }
-		}
+        public string[] Extensions => new[] { ".vbm" };
 
-		public void ReadFile(string path)
-		{
-			this.Path = path;
+        public void ReadFile(string path)
+        {
+            Path = path;
 
-			var file = new FileStream(path, FileMode.Open);
-			this.RealHeader = new Header();
-			RealHeader.Read(file);
-			InputLog = InputLogIO.Read(file, RealHeader.ConnectedControllers);
+            var file = new FileStream(path, FileMode.Open);
+            RealHeader = new Header();
+            RealHeader.Read(file);
+            InputLog = InputLogIo.Read(file, RealHeader.ConnectedControllers);
 
-			file.Close();
-		}
+            file.Close();
+        }
 
-		public void WriteFile(string path)
-		{
-			var file = new FileStream(path, FileMode.Create);
+        public void WriteFile(string path)
+        {
+            var file = new FileStream(path, FileMode.Create);
 
-			RealHeader.Write(file);
-			InputLogIO.Write(file, InputLog);
+            RealHeader.Write(file);
+            InputLogIo.Write(file, InputLog);
 
-			file.Close();
-		}
+            file.Close();
+        }
 
-		public bool IsEmptyFrame(string[] strings)
-		{
-			var frame = new Frame();
-			frame.Parse(strings);
+        public bool IsEmptyFrame(string[] strings)
+        {
+            var frame = new Frame();
+            frame.Parse(strings);
 
-			return frame.Controllers.All(b => b == GameboyButtons.Empty);
-		}
+            return frame.Controllers.All(b => b == GameboyButtons.Empty);
+        }
 
-		public void SetFrameCount(uint count)
-		{
-			RealHeader.FrameCount = count;
-		}
-	}
+        public void SetFrameCount(uint count)
+        {
+            RealHeader.FrameCount = count;
+        }
+    }
 }

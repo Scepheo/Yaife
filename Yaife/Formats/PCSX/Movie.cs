@@ -1,65 +1,57 @@
 ﻿using System.IO;
 using System.Windows.Forms;
+using Yaife.FormatInterfaces;
 
 namespace Yaife.Formats.PCSX
 {
-	public class Movie : IMovie, IFrameCount
-	{
-		public InputLog InputLog { get; set; }
+    public class Movie : IMovie, IFrameCount
+    {
+        public InputLog InputLog { get; set; }
 
-		public Header RealHeader;
-		public object Header
-		{
-			get { return RealHeader; }
-		}
+        public Header RealHeader;
+        public object Header => RealHeader;
 
-		public bool HasMenu { get { return false; } }
-		public ToolStripMenuItem GetMovieMenu(MovieTab tab) { return null; }
+        public bool HasMenu => false;
+        public ToolStripMenuItem GetMovieMenu(MovieTab tab) { return null; }
 
-		public string Path { get; set; }
+        public string Path { get; set; }
 
-		public string Description
-		{
-			get { return "PCSX-rr"; }
-		}
+        public string Description => "PCSX-rr";
 
-		public string[] Extensions
-		{
-			get { return new string[] { ".pxm" }; }
-		}
+        public string[] Extensions => new[] { ".pxm" };
 
-		public void ReadFile(string path)
-		{
-			this.Path = path;
+        public void ReadFile(string path)
+        {
+            Path = path;
 
-			var file = new FileStream(path, FileMode.Open);
-			this.RealHeader = new Header();
-			RealHeader.Read(file);
-			InputLog = InputLogIO.Read(file, RealHeader.ControllerTypePort1, RealHeader.ControllerTypePort2);
+            var file = new FileStream(path, FileMode.Open);
+            RealHeader = new Header();
+            RealHeader.Read(file);
+            InputLog = InputLogIo.Read(file, RealHeader.ControllerTypePort1, RealHeader.ControllerTypePort2);
 
-			file.Close();
-		}
+            file.Close();
+        }
 
-		public void WriteFile(string path)
-		{
-			var file = new FileStream(path, FileMode.Create);
+        public void WriteFile(string path)
+        {
+            var file = new FileStream(path, FileMode.Create);
 
-			RealHeader.Write(file);
-			InputLogIO.Write(file, InputLog);
+            RealHeader.Write(file);
+            InputLogIo.Write(file, InputLog);
 
-			file.Close();
-		}
+            file.Close();
+        }
 
-		public bool IsEmptyFrame(string[] strings)
-		{
-			var frame = new Frame();
-			frame.Parse(strings);
-			return frame.IsEmpty();
-		}
+        public bool IsEmptyFrame(string[] strings)
+        {
+            var frame = new Frame();
+            frame.Parse(strings);
+            return frame.IsEmpty();
+        }
 
-		public void SetFrameCount(uint count)
-		{
-			RealHeader.FrameCount = count;
-		}
-	}
+        public void SetFrameCount(uint count)
+        {
+            RealHeader.FrameCount = count;
+        }
+    }
 }

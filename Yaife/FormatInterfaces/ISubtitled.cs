@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Yaife.Editors;
 
-namespace Yaife
+namespace Yaife.FormatInterfaces
 {
-	interface ISubtitled
-	{
-		Subtitle[] GetSubtitles();
-	}
+    internal interface ISubtitled
+    {
+        Subtitle[] GetSubtitles();
+    }
 }

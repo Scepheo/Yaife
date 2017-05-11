@@ -5,76 +5,65 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Yaife
+namespace Yaife.Editors
 {
-	public partial class PositionedSubtitleForm : Form
-	{
-		public PositionedSubtitle[] PositionedSubtitles
-		{
-			get { return positionedSubtitlesBindingSource.Cast<PositionedSubtitle>().ToArray(); }
-			set { positionedSubtitlesBindingSource.DataSource = value; }
-		}
+    public partial class PositionedSubtitleForm : Form
+    {
+        public PositionedSubtitle[] PositionedSubtitles
+        {
+            get { return positionedSubtitlesBindingSource.Cast<PositionedSubtitle>().ToArray(); }
+            set { positionedSubtitlesBindingSource.DataSource = value; }
+        }
 
-		public PositionedSubtitleForm()
-		{
-			InitializeComponent();
-		}
+        public PositionedSubtitleForm()
+        {
+            InitializeComponent();
+        }
 
-		private void okButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
 
-		private void cancelButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
-	}
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+    }
 
-	public class PositionedSubtitleEditor : UITypeEditor
-	{
-		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-		{
-			return UITypeEditorEditStyle.Modal;
-		}
+    public class PositionedSubtitleEditor : UITypeEditor
+    {
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
+        }
 
-		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
-		{
-			var form = new PositionedSubtitleForm();
-			form.PositionedSubtitles = value as PositionedSubtitle[];
+        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+        {
+            var form = new PositionedSubtitleForm { PositionedSubtitles = value as PositionedSubtitle[] };
+            return form.ShowDialog() == DialogResult.OK ? form.PositionedSubtitles : value;
+        }
+    }
 
-			if (form.ShowDialog() == DialogResult.OK)
-				return form.PositionedSubtitles;
-			else
-				return value;
-		}
-	}
+    public class PositionedSubtitleConverter : ExpandableObjectConverter
+    {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            return destinationType == typeof(PositionedSubtitle[]) || base.CanConvertTo(context, destinationType);
+        }
 
-	public class PositionedSubtitleConverter : ExpandableObjectConverter
-	{
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-		{
-			if (destinationType == typeof(PositionedSubtitle[]))
-				return true;
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            var subtitles = value as PositionedSubtitle[];
 
-			return base.CanConvertTo(context, destinationType);
-		}
+            if (subtitles != null && destinationType == typeof(string))
+            {
+                return subtitles.Length > 0 ? subtitles[0].Text : "";
+            }
 
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-		{
-			if (value is PositionedSubtitle[] && destinationType == typeof(string))
-			{
-				var array = value as PositionedSubtitle[];
-
-				if (array.Length > 0)
-					return array[0].Text;
-				else
-					return "";
-			}
-
-			return base.ConvertTo(context, culture, value, destinationType);
-		}
-	}
+            return base.ConvertTo(context, culture, value, destinationType);
+        }
+    }
 }

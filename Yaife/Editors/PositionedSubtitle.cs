@@ -1,10 +1,8 @@
-﻿using System.Drawing;
-
-namespace Yaife
+﻿namespace Yaife.Editors
 {
-	public class PositionedSubtitle : Subtitle
-	{
-		public int X { get; set; }
-		public int Y { get; set; }
-	}
+    public class PositionedSubtitle : Subtitle
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+    }
 }

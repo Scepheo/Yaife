@@ -1,67 +1,57 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using Yaife.FormatInterfaces;
 
 namespace Yaife.Formats.Hourglass
 {
-	public class Movie : IMovie, IFrameCount
-	{
-		public InputLog InputLog { get; private set; }
+    public class Movie : IMovie, IFrameCount
+    {
+        public InputLog InputLog { get; private set; }
 
-		public Header RealHeader;
+        public Header RealHeader;
 
-		public object Header
-		{
-			get { return RealHeader; }
-		}
+        public object Header => RealHeader;
 
-		public bool HasMenu { get { return true; } }
-		public ToolStripMenuItem GetMovieMenu(MovieTab tab)
-		{
-			return new Menu(tab);
-		}
+        public bool HasMenu => true;
 
-		public string Path { get; set; }
+        public ToolStripMenuItem GetMovieMenu(MovieTab tab)
+        {
+            return new Menu(tab);
+        }
 
-		public string Description
-		{
-			get { return "Hourglass"; }
-		}
+        public string Path { get; set; }
 
-		public string[] Extensions
-		{
-			get { return new string[] { ".wtf", ".hgm" }; }
-		}
+        public string Description => "Hourglass";
 
-		public void ReadFile(string path)
-		{
-			this.Path = path;
+        public string[] Extensions => new[] { ".wtf", ".hgm" };
 
-			var stream = new FileStream(path, FileMode.Open);
-			this.RealHeader = new Header(stream);
-			this.InputLog = InputLogIO.Read(stream);
-			stream.Close();
-		}
+        public void ReadFile(string path)
+        {
+            Path = path;
 
-		public void WriteFile(string path)
-		{
-			var stream = new FileStream(path, FileMode.OpenOrCreate);
-			this.RealHeader.Write(stream);
-			InputLogIO.Write(stream, InputLog);
-			stream.Close();
-		}
+            var stream = new FileStream(path, FileMode.Open);
+            RealHeader = new Header(stream);
+            InputLog = InputLogIo.Read(stream);
+            stream.Close();
+        }
 
-		public bool IsEmptyFrame(string[] frame)
-		{
-			if (frame == null)
-				return false;
+        public void WriteFile(string path)
+        {
+            var stream = new FileStream(path, FileMode.OpenOrCreate);
+            RealHeader.Write(stream);
+            InputLogIo.Write(stream, InputLog);
+            stream.Close();
+        }
 
-			return String.IsNullOrEmpty(frame[0]);
-		}
+        public bool IsEmptyFrame(string[] frame)
+        {
+            return frame != null && string.IsNullOrEmpty(frame[0]);
+        }
 
-		public void SetFrameCount(uint count)
-		{
-			RealHeader.InputFrames = count;
-		}
-	}
+        public void SetFrameCount(uint count)
+        {
+            RealHeader.InputFrames = count;
+        }
+    }
 }

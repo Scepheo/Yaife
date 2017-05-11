@@ -1,76 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows.Forms;
+using Yaife.FormatInterfaces;
 
 namespace Yaife.Formats.Dolphin
 {
-	public class Movie : IMovie, IFrameCount
-	{
-		public InputLog InputLog { get; private set; }
+    public class Movie : IMovie, IFrameCount
+    {
+        public InputLog InputLog { get; private set; }
 
-		public Header RealHeader;
+        public Header RealHeader;
 
-		public object Header
-		{
-			get { return RealHeader; }
-		}
+        public object Header => RealHeader;
 
-		public bool HasMenu { get { return true; } }
-		public ToolStripMenuItem GetMovieMenu(MovieTab tab)
-		{
-			return new Menu(tab);
-		}
+        public bool HasMenu => true;
 
-		public string Path { get; set; }
+        public ToolStripMenuItem GetMovieMenu(MovieTab tab)
+        {
+            return new Menu(tab);
+        }
 
-		public string Description
-		{
-			get { return "Dolphin"; }
-		}
+        public string Path { get; set; }
 
-		public string[] Extensions
-		{
-			get { return new string[] { ".dtm" }; }
-		}
+        public string Description => "Dolphin";
 
-		public void ReadFile(string path)
-		{
-			this.Path = path;
-			var stream = new FileStream(path, FileMode.Open);
+        public string[] Extensions => new[] { ".dtm" };
 
-			RealHeader = new Header();
-			RealHeader.Read(stream);
+        public void ReadFile(string path)
+        {
+            Path = path;
+            var stream = new FileStream(path, FileMode.Open);
 
-			var isWii = RealHeader.Controllers.HasFlag(Controller.WiiMote1);
-			InputLog = InputLogIO.Read(stream, isWii);
+            RealHeader = new Header();
+            RealHeader.Read(stream);
 
-			stream.Close();
-		}
+            var isWii = RealHeader.Controllers.HasFlag(Controller.WiiMote1);
+            InputLog = InputLogIo.Read(stream, isWii);
 
-		public void WriteFile(string path)
-		{
-			var stream = new FileStream(path, FileMode.Create);
-			RealHeader.Write(stream);
+            stream.Close();
+        }
 
-			var isWii = RealHeader.Controllers.HasFlag(Controller.WiiMote1);
-			InputLogIO.Write(stream, InputLog, isWii);
-			stream.Close();
-		}
+        public void WriteFile(string path)
+        {
+            var stream = new FileStream(path, FileMode.Create);
+            RealHeader.Write(stream);
 
-		public bool IsEmptyFrame(string[] str)
-		{
-			var frame = new GameCubeFrame();
-			frame.Parse(str);
-			return frame.IsEmpty();
-		}
+            var isWii = RealHeader.Controllers.HasFlag(Controller.WiiMote1);
+            InputLogIo.Write(stream, InputLog, isWii);
+            stream.Close();
+        }
 
-		public void SetFrameCount(uint count)
-		{
-			RealHeader.InputCount = count;
-		}
-	}
+        public bool IsEmptyFrame(string[] str)
+        {
+            var frame = new GameCubeFrame();
+            frame.Parse(str);
+            return frame.IsEmpty();
+        }
+
+        public void SetFrameCount(uint count)
+        {
+            RealHeader.InputCount = count;
+        }
+    }
 }

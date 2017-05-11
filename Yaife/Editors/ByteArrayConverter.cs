@@ -1,47 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yaife.Utilities;
 
-namespace Yaife
+namespace Yaife.Editors
 {
-	public class HexByteConverter : ExpandableObjectConverter
-	{
-		public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-		{
-			if (destinationType == typeof(byte[]))
-				return true;
+    public class HexByteConverter : ExpandableObjectConverter
+    {
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            return destinationType == typeof(byte[]) || base.CanConvertTo(context, destinationType);
+        }
 
-			return base.CanConvertTo(context, destinationType);
-		}
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+        }
 
-		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-		{
-			if (sourceType == typeof(string))
-				return true;
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            var bytes = value as byte[];
 
-			return base.CanConvertFrom(context, sourceType);
-		}
+            return bytes != null && destinationType == typeof(string)
+                ? bytes.ToHexString()
+                : base.ConvertTo(context, culture, value, destinationType);
+        }
 
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-		{
-			if (value is byte[] && destinationType == typeof(string))
-				return (value as byte[]).ToHexString();
-
-			return base.ConvertTo(context, culture, value, destinationType);
-		}
-
-		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
-		{
-			if (value is string)
-				return HexString.Parse(value as string);
-
-			return base.ConvertFrom(context, culture, value);
-		}
-	}
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+        {
+            var str = value as string;
+            return str != null ? HexString.Parse(str) : base.ConvertFrom(context, culture, value);
+        }
+    }
 }

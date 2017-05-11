@@ -5,23 +5,23 @@ namespace Yaife
     public interface IMovie
     {
         // Fields
-		InputLog InputLog { get; }
+        InputLog InputLog { get; }
         object Header { get; }
 
-		// Control
-		bool HasMenu { get; }
-		ToolStripMenuItem GetMovieMenu(MovieTab tab);
+        // Control
+        bool HasMenu { get; }
+        ToolStripMenuItem GetMovieMenu(MovieTab tab);
 
         // Meta data
         string Path { get; set; }
-		string Description { get; }
-		string[] Extensions { get; }
+        string Description { get; }
+        string[] Extensions { get; }
 
         // File IO
         void ReadFile(string path);
         void WriteFile(string path);
 
-		// All-format functionality
-		bool IsEmptyFrame(string[] frame);
+        // All-format functionality
+        bool IsEmptyFrame(string[] frame);
     }
 }
